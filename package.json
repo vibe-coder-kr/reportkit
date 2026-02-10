@@ -1,0 +1,39 @@
+{
+  "name": "reportkit",
+  "version": "1.0.0",
+  "description": "A flexible and customizable report generation library",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "example": "tsx examples/weekly-report.ts",
+    "test": "jest",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "report",
+    "pdf",
+    "html",
+    "generator",
+    "typescript"
+  ],
+  "author": "vibe-coder-kr",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.19.33",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
