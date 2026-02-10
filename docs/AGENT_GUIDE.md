@@ -4,7 +4,7 @@ This document is intended for AI agents (LLMs) to ensure they generate correct, 
 
 ## 1. Library Philosophy
 ReportKit uses a declarative DSL to build a Report AST (Abstract Syntax Tree). The structure is:
-`report` -> `cover` -> `body` (array of `section` or `block`).
+`report` -> `cover` -> `body` (array of `section` or `block`) -> `footer` (optional).
 
 ## 2. Mandatory Coding Rules for Agents
 
@@ -65,6 +65,34 @@ async function generate() {
 }
 ```
 
+### D. Paragraph Styling & Anchor IDs
+- **Rule**: Use the `options` parameter in `p()` for text emphasis and alignment.
+- **Rule**: Provide unique `id` strings for `section`, `p`, or `list` when internal linking or TOC (Table of Contents) functionality is required.
+
+```typescript
+// ✅ Correct - Styled paragraph with ID
+p('Confidential Analysis', { 
+  emphasis: 'bold', 
+  align: 'center', 
+  id: 'exec-summary' 
+})
+```
+
+### E. Footer & Page Numbering
+- **Rule**: Use the `footer` property in `report()` to add consistent footers across pages.
+- **Rule**: Set `pageNumber: true` to automatically enable page numbering (e.g., "1 / 5") in the generated PDF.
+
+```typescript
+const myReport = report({
+  meta: { title: 'Annual Report' },
+  body: [ /* ... */ ],
+  footer: {
+    text: '© 2026 ReportKit Corp',
+    pageNumber: true // Enables auto page numbering
+  }
+});
+```
+
 ## 3. Theming & Presets
 Avoid manually building complex themes unless requested. The default theme is `theme.mono` (minimalist black and white), which is used when no theme is specified.
 Prefer built-in presets:
@@ -95,6 +123,7 @@ const customTheme = ThemeBuilder.create()
 4. **Missing Imports**: Always import required functions from 'reportkit'. Common imports include `report`, `section`, `p`, `table`, `PDFBuilder`, and `ThemeBuilder`.
 5. **Async/Await**: Remember that PDF generation is asynchronous. Always use async/await or promises appropriately.
 6. **No Hallucinated DSL Functions**: Only use functions that actually exist in the library. Do not invent or hallucinate non-existent functions. The available DSL functions are: `report`, `cover`, `section`, `p`, `table`, `list`, `checklist`, `divider`, `image`, `link`, `codeblock`, `code`. Using non-existent functions will result in runtime errors.
+7. **Footer Overlap**: Ensure report content doesn't collide with the footer area. The library attempts to manage this, but extremely long footers might require manual margin adjustments.
 
 ## 5. Metadata Schema
 - `meta.title`: Required. Used for HTML `<title>` and inherited as the default `cover.title`.
@@ -107,7 +136,8 @@ const customTheme = ThemeBuilder.create()
 ## 6. Best Practices for AI Agents
 - Always provide complete, runnable code examples when generating solutions
 - Use meaningful variable names that reflect the report's purpose
-- Follow the hierarchical structure consistently: report → cover → body → sections
+- Follow the hierarchical structure consistently: report → cover → body → sections → footer
 - When uncertain about a property name, refer to the TypeScript definitions or use common sense based on the context
+- **Image Metadata**: Always provide `alt` text for images to ensure accessibility, and use `caption` for descriptive labels under images.
 - Consider accessibility when generating HTML content
 - Use semantic elements appropriately (sections, paragraphs, tables, etc.)
