@@ -13,8 +13,14 @@ A flexible and customizable report generation library built for the modern web. 
 
 ## 📦 Installation
 
-This library is designed to work with Bun. Install using:
+Install using your preferred package manager:
 
+With npm:
+```bash
+npm install reportkit
+```
+
+With Bun:
 ```bash
 bun add reportkit
 ```
