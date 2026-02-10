@@ -25,9 +25,6 @@
   ],
   "author": "vibe-coder-kr",
   "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vibe-coder-kr/reportkit.git"
