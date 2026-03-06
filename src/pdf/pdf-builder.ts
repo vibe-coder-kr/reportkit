@@ -15,7 +15,7 @@ export class PDFBuilder {
 
   async init(): Promise<void> {
     this.browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
   }
@@ -82,7 +82,7 @@ export class PDFBuilder {
     }
 
     // Generate PDF buffer
-    const pdfBuffer = await page.pdf({
+    const pdfOutput = await page.pdf({
       format: pdfOptions.format,
       landscape: pdfOptions.orientation === 'landscape',
       printBackground: pdfOptions.printBackground,
@@ -96,7 +96,7 @@ export class PDFBuilder {
 
     await page.close();
 
-    return pdfBuffer;
+    return Buffer.from(pdfOutput);
   }
 
   async savePDF(report: ReportNode, filePath: string, options: PDFOptions = DEFAULT_PDF_OPTIONS): Promise<void> {
@@ -166,7 +166,7 @@ export class PDFBuilder {
     }
 
     // Generate PDF buffer with enhanced styling
-    const pdfBuffer = await page.pdf({
+    const pdfOutput = await page.pdf({
       format: pdfOptions.format,
       landscape: pdfOptions.orientation === 'landscape',
       printBackground: pdfOptions.printBackground,
@@ -180,6 +180,6 @@ export class PDFBuilder {
 
     await page.close();
 
-    return pdfBuffer;
+    return Buffer.from(pdfOutput);
   }
 }
